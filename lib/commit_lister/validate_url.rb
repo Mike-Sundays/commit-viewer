@@ -1,5 +1,6 @@
 require 'uri'
 require 'net/http'
+require_relative './validate_url_messages'
 
 module CommitLister
   # valid link is an https link as provided in download
@@ -14,11 +15,11 @@ module CommitLister
     def validate
       parsed_url = parse
       if !valid_https?(parsed_url)
-        {:valid => false, :error => "URL is not using HTTPS"}
+        {:valid => false, :error => ValidateUrlMessages::NO_HTTPS}
       elsif !valid_extension?(parsed_url)
-        {:valid => false, :error => "URL does not contain .git extension"}
+        {:valid => false, :error => ValidateUrlMessages::NO_GIT_EXTENSION}
       elsif !valid_host?(parsed_url)
-        {:valid => false, :error => "URL is not from Github"}
+        {:valid => false, :error => ValidateUrlMessages::NOT_GITHUB}
       else
         {:valid => true, :error => ""}
       end

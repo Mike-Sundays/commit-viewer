@@ -2,11 +2,14 @@ require 'tmpdir'
 require 'date'
 
 module CommitLister
-  class ParseCommits
-    attr_reader :log
 
-    def initialize(log)
+  # parses pretty printed git logs, with a commit in each line
+  class ParseCommits
+    attr_reader :log, :separator
+
+    def initialize(log, separator)
       @log = log
+      @separator = separator
     end
 
     def run
@@ -22,7 +25,7 @@ module CommitLister
 
     def parse_commit(line)
       commit = {}
-      split_line = line.split(',')
+      split_line = line.split(separator)
       commit[:hash] = split_line[0]
       commit[:message] = split_line[1]
       commit[:author] = split_line[2]

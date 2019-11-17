@@ -16,7 +16,7 @@ module CommitLister
         validation = valid_url?(url)
         if validation[:valid]
           log = get_commits_from_url
-          list = parse_into_list(log[:data])
+          list = parse_into_list(log[:data], ',')
           {:success=> true, :data => list, :error => nil}
         else
           {:success=> false, :data => nil, :error => validation[:error]}
@@ -32,8 +32,8 @@ module CommitLister
       CommitLister::GetCommitsFromUrl.new(url).run
     end
 
-    def parse_into_list(log)
-      CommitLister::ParseCommits.new(log).run
+    def parse_into_list(log, separator)
+      CommitLister::ParseCommits.new(log, separator).run
     end
 
     def valid_url?(url)

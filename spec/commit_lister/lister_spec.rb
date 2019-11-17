@@ -17,8 +17,15 @@ describe CommitLister::Lister do
     expect(first_commit[:date]).to be_instance_of(DateTime)
   end
 
-  it "should return an exception if something goes wrong" do
+  it "should return a failure if url is invalid" do
     result = CommitLister::Lister.new("").run
+
+    expect(result[:success]).to eql(false)
+    expect(result[:error]).to be
+  end
+
+  it "should return a failure if repo does not exist" do
+    result = CommitLister::Lister.new("https://github.com/iehgsie.git").run
 
     expect(result[:success]).to eql(false)
     expect(result[:error]).to be

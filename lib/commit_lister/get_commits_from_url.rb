@@ -2,6 +2,9 @@ require 'tmpdir'
 
 module CommitLister
   class GitCloneError < StandardError
+    def message
+      "Error in git clone command, exit status #{$?.exitstatus}"
+    end
   end
 
   class GetCommitsFromUrl
@@ -21,7 +24,7 @@ module CommitLister
             change_directory(project_name)
             log = get_commits
           else
-            raise GitCloneError, "Error in git clone command, exit status #{$?.exitstatus}"
+            raise GitCloneError
           end
         }
         {:success=> true, :data => log, :error => nil}

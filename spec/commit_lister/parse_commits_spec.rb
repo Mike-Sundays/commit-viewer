@@ -8,8 +8,8 @@ describe CommitLister::ParseCommits do
     ].join("\n")
   end
 
-  it "should return a hash of commits" do
-    result = CommitLister::ParseCommits.new(@valid_log).run
+  it "should return a list of commits for valid input" do
+    result = CommitLister::ParseCommits.new(@valid_log, ',').run
     first_commit = result.first
 
     expect(result).to be_instance_of(Array)
@@ -18,5 +18,9 @@ describe CommitLister::ParseCommits do
     expect(first_commit[:date]).to be_instance_of(DateTime)
   end
 
-
+  it "should return an empty list for no commits" do
+    result = CommitLister::ParseCommits.new("", ",").run
+    expect(result).to be_instance_of(Array)
+    expect(result.size).to eql(0)
+  end
 end
