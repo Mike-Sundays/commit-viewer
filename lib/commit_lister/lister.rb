@@ -17,12 +17,12 @@ module CommitLister
         if validation[:valid]
           log = get_commits_from_url
           list = parse_into_list(log[:data], ',')
-          {:success=> true, :data => list, :error => nil}
+          {:success => true, :valid_input => true, :data => list, :error => nil}
         else
-          {:success=> false, :data => nil, :error => validation[:error]}
+          {:success => false, :valid_input => false, :data => nil, :error => validation[:error]}
         end
       rescue StandardError => e
-        {:success=> false, :data => nil, :error => e.message}
+        {:success => false, :valid_input => true, :data => nil, :error => e.message}
       end
     end
 

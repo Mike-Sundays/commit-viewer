@@ -23,6 +23,8 @@ module CommitLister
       else
         {:valid => true, :error => ""}
       end
+    rescue URI::Error => e
+        {:valid => false, :error => e.message }
     end
 
     def parse
