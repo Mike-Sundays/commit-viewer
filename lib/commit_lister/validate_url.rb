@@ -26,6 +26,7 @@ module CommitLister
     end
 
     def parse
+      # this avoids most injection cases
       URI.parse(url)
     end
 

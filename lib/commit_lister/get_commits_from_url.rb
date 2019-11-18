@@ -58,7 +58,9 @@ module CommitLister
     end
 
     def clone_repo(url, timeout_seconds)
-      system("timeout #{timeout_seconds}s git clone #{url}")
+      # see https://stackoverflow.com/questions/1936633
+      # for justification of this syntax
+      system("timeout", "#{timeout_seconds}", "git", "clone", "#{url}")
     end
 
     def wait_until_directory_is_cloned(directory)
