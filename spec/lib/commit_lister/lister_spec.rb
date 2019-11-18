@@ -25,7 +25,16 @@ RSpec.describe CommitLister::Lister do
   end
 
   it "should return a failure if repo does not exist" do
-    result = CommitLister::Lister.new("https://github.com/iehgsie.git").run
+    result = CommitLister::Lister.new("https://github.com/Mike-Sundays/iehgsie.git").run
+
+    expect(result[:success]).to eql(false)
+    expect(result[:error]).to be
+  end
+
+  it "should return a failure for injected bash command" do
+    result = CommitLister::Lister.new(
+        "https://github.com/Mike-Sundays/simple-notes-react.git && touch badfile.txt"
+    ).run
 
     expect(result[:success]).to eql(false)
     expect(result[:error]).to be
