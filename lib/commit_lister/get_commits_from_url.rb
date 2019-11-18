@@ -1,4 +1,5 @@
 require 'tmpdir'
+require 'fileutils'
 
 module CommitLister
   class GitCloneError < StandardError
@@ -8,6 +9,9 @@ module CommitLister
   end
 
   class GetCommitsFromUrl
+
+    DEFAULT_TIMEOUT_SECONDS = "60".freeze
+
     attr_reader :url
 
     def initialize(url)
@@ -15,36 +19,54 @@ module CommitLister
     end
 
     def run
+      project_name = parse_project_name(url)
+      tmp_dir = create_temporary_directory
       begin
-        log = nil
-        project_name = parse_project_name(url)
-        Dir.mktmpdir { |dir|
-          change_directory(dir)
-          if clone_repo(url)
-            change_directory(project_name)
-            log = get_commits
-          else
-            raise GitCloneError
-          end
-        }
-        {:success=> true, :data => log, :error => nil}
+        change_directory(tmp_dir)
+        if clone_repo(url, DEFAULT_TIMEOUT_SECONDS)
+          wait_until_directory_is_cloned(project_name)
+          change_directory(project_name)
+          log = get_commits
+        else
+          raise GitCloneError
+        end
+
+        {:success => true, :data => log, :error => nil}
       rescue StandardError => e
-        {:success=> false, :data => nil, :error => e.message}
+        {:success => false, :data => nil, :error => e.message}
+      ensure
+        remove_directory(tmp_dir)
       end
     end
 
     private
 
-    def parse_project_name(url)
-      url.split('/')[-1].split('.')[0]
+    def create_temporary_directory
+      Dir.mktmpdir(nil, "#{Dir.pwd}/tmp/repos")
     end
 
     def change_directory(path)
       Dir.chdir(path)
     end
 
-    def clone_repo(url)
-      system("git clone #{url}")
+    def remove_directory(path)
+      FileUtils.remove_entry path
+    end
+
+    def parse_project_name(url)
+      url.split('/')[-1].split('.')[0]
+    end
+
+    def clone_repo(url, timeout_seconds)
+      system("timeout #{timeout_seconds}s git clone #{url}")
+    end
+
+    def wait_until_directory_is_cloned(directory)
+      # protecting against the clone command returning success before
+      # having cloned the repo completely
+      until File.directory?(directory)
+        sleep(1)
+      end
     end
 
     def get_commits
