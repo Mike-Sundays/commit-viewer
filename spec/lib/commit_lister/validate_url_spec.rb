@@ -1,6 +1,6 @@
 require './lib/commit_lister/validate_url'
 
-describe CommitLister::ValidateUrl do
+RSpec.describe CommitLister::ValidateUrl do
   it "should return true for valid url" do
     url = "https://github.com/Mike-Sundays/simple-notes-react.git"
 

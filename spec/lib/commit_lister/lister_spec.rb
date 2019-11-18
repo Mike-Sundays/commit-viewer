@@ -1,7 +1,7 @@
-# these are integration tests that communicate directly with github
+# these are tests that communicate directly with github
 require './lib/commit_lister/lister'
 
-describe CommitLister::Lister do
+RSpec.describe CommitLister::Lister do
   before :all do
     @url = "https://github.com/Mike-Sundays/simple-notes-react.git"
   end

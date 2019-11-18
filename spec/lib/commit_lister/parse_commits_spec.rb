@@ -1,6 +1,6 @@
 require './lib/commit_lister/parse_commits'
 
-describe CommitLister::ParseCommits do
+RSpec.describe CommitLister::ParseCommits do
   before :all do
     @valid_log = [
         '0e94cd1,add readme,mike-sundays,Tue Nov 12 12:21:11 2019 +0000',
