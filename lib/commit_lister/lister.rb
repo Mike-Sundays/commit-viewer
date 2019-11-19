@@ -2,6 +2,7 @@ require_relative './validate_url'
 require_relative './get_commits_from_url'
 require_relative './parse_commits'
 require 'will_paginate/array'
+require 'result'
 
 module CommitLister
   class Lister
@@ -22,14 +23,14 @@ module CommitLister
         validation = valid_url?(url)
         if validation[:valid]
           result = get_commits_from_url
-          paginated_log = paginate_log!(result[:data])
+          paginated_log = paginate_log!(result.data)
           list = parse_into_list(paginated_log, ',')
-          {:success => true, :valid_input => true, :data => list, :error => nil}
+          Result.success(list)
         else
-          {:success => false, :valid_input => false, :data => nil, :error => validation[:error]}
+          Result.failure(validation[:error], false)
         end
       rescue StandardError => e
-        {:success => false, :valid_input => true, :data => nil, :error => e.message}
+        Result.failure(e.message, true)
       end
     end
 

@@ -2,6 +2,7 @@ require 'tmpdir'
 require 'net/http'
 require 'directory_utils'
 require_relative './git_wrapper'
+require 'result'
 
 module CommitLister
   class GetCommitsFromUrl
@@ -31,9 +32,9 @@ module CommitLister
 
         log = get_array_of_commits
 
-        {:success => true, :data => log, :error => nil}
+        Result.success(log)
       rescue StandardError => e
-        {:success => false, :data => nil, :error => e.message}
+        Result.failure(e.message, true)
       ensure
         cleanup(tmp_dir)
       end
