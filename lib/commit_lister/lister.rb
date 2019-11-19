@@ -1,7 +1,8 @@
-require_relative './validate_url'
-require_relative './get_commits_from_url'
-require_relative './parse_commits'
+require_relative './validation/validate_url'
+require_relative './git/get_commits_from_url'
+require_relative './git/parse_commits'
 require_relative './commit_constants'
+
 require 'will_paginate/array'
 require 'result'
 

@@ -1,4 +1,4 @@
-require './lib/commit_lister/validate_url'
+require './lib/commit_lister/validation/validate_url'
 
 RSpec.describe CommitLister::ValidateUrl do
   it "should return true for valid url" do

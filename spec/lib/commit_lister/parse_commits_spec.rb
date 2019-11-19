@@ -1,4 +1,4 @@
-require './lib/commit_lister/parse_commits'
+require './lib/commit_lister/git/parse_commits'
 
 RSpec.describe CommitLister::ParseCommits do
   before :all do

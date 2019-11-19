@@ -1,5 +1,3 @@
-
-
 module GitWrapper
   class GitCloneError < StandardError
     def message
