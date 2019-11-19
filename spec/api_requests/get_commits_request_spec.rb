@@ -34,4 +34,16 @@ RSpec.describe "get commits from repo endpoint", :type => :request do
     end
   end
 
+  context 'given an non existing repo' do
+    it 'returns a bad request response response' do
+      repo_url = "http://github.com/Mike-Sundays/fake.git"
+      query_string = "?url=#{repo_url}"
+
+      get "/commits/#{query_string}"
+
+      expect(response.content_type).to eq("application/json; charset=utf-8")
+      expect(response).to have_http_status(400)
+    end
+  end
+
 end
