@@ -6,7 +6,7 @@ RSpec.describe CommitLister::Lister do
     @url = "https://github.com/Mike-Sundays/simple-notes-react.git"
   end
 
-  it "should return a hash of commits" do
+  it "should return a default paginated list of commits" do
     result = CommitLister::Lister.new(@url).run
     first_commit = result[:data].first
 
@@ -15,6 +15,19 @@ RSpec.describe CommitLister::Lister do
     expect(first_commit).to be_instance_of(Hash)
     expect(first_commit.keys).to match_array([:hash, :message, :author, :date])
     expect(first_commit[:date]).to be_instance_of(DateTime)
+    expect(result[:data].size).to eql(10)
+  end
+
+  it "should return list of commits with 2 per page" do
+    result = CommitLister::Lister.new(@url, 1, 2).run
+    first_commit = result[:data].first
+
+    expect(result[:success]).to eql(true)
+    expect(result[:data]).to be_instance_of(Array)
+    expect(first_commit).to be_instance_of(Hash)
+    expect(first_commit.keys).to match_array([:hash, :message, :author, :date])
+    expect(first_commit[:date]).to be_instance_of(DateTime)
+    expect(result[:data].size).to eql(2)
   end
 
   it "should return a failure if url is invalid" do

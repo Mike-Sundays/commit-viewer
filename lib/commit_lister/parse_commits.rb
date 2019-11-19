@@ -13,12 +13,12 @@ module CommitLister
     end
 
     def run
-      commit_list = []
+      commit_hash_list = []
 
-      log.each_line do |line|
-        commit_list << parse_commit(line)
+      log.each do |line|
+        commit_hash_list << parse_commit(line)
       end
-      commit_list
+      commit_hash_list
     end
 
     private

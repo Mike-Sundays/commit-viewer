@@ -40,7 +40,7 @@ module CommitLister
         wait_until_directory_is_cloned(project_name)
         DirectoryUtils.change_directory(project_name)
 
-        log = get_commits
+        log = get_commits.split("\n")
 
         {:success => true, :data => log, :error => nil}
       rescue StandardError => e
