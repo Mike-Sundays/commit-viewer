@@ -2,6 +2,7 @@ require 'tmpdir'
 require 'net/http'
 require 'directory_utils'
 require_relative './git_wrapper'
+require_relative './commit_constants'
 require 'result'
 
 module CommitLister
@@ -9,10 +10,11 @@ module CommitLister
 
     DEFAULT_TIMEOUT_SECONDS = "30".freeze
 
-    attr_reader :url
+    attr_reader :url, :format
 
-    def initialize(url)
+    def initialize(url, format)
       @url = url
+      @format = format
     end
 
     def run
@@ -65,11 +67,17 @@ module CommitLister
     end
 
     def get_array_of_commits
-      GitWrapper::Commands.get_list_of_commits_oneliner.split("\n")
+      commits = GitWrapper::Commands.get_commits(format_for_git)
+      commits.split("\n")
+    end
+
+    def format_for_git
+      correspondence = CommitConstants::FORMAT_CORRESPONDENCE
+      format.map{|parameter| correspondence[parameter]}.join(",")
     end
 
     def cleanup(dir)
-      2.times {DirectoryUtils.change_directory("..")}
+      2.times { DirectoryUtils.change_directory("..") }
       DirectoryUtils.remove_directory(dir)
     end
   end

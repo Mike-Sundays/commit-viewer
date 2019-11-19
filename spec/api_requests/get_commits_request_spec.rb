@@ -18,7 +18,7 @@ RSpec.describe "get commits from repo endpoint", :type => :request do
       expect(result).to be_instance_of(Array)
 
       expect(first_commit).to be_instance_of(Hash)
-      expect(first_commit.keys).to match_array(%w(hash message author date))
+      expect(first_commit.keys).to include("hash", "message", "author", "date")
       expect(result.size).to eql(10)
     end
   end
@@ -43,7 +43,7 @@ RSpec.describe "get commits from repo endpoint", :type => :request do
       expect(result).to be_instance_of(Array)
 
       expect(first_commit).to be_instance_of(Hash)
-      expect(first_commit.keys).to match_array(%w(hash message author date))
+      expect(first_commit.keys).to include("hash", "message", "author", "date")
       expect(result.size).to eql(per_page)
     end
   end

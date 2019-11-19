@@ -1,5 +1,6 @@
-module GitWrapper
 
+
+module GitWrapper
   class GitCloneError < StandardError
     def message
       "Error in git clone command, exit status #{$?.exitstatus}"
@@ -13,14 +14,14 @@ module GitWrapper
   end
 
   class Commands
-    def self.clone_repo(url,timeout)
+    def self.clone_repo(url, timeout)
       # see https://stackoverflow.com/questions/1936633
       # for justification of this syntax
       system("timeout", "#{timeout}", "git", "clone", "#{url}")
     end
 
-    def self.get_list_of_commits_oneliner
-      command = "git log --oneline --format='%H,%s,%an,%ad'"
+    def self.get_commits(format)
+      command = "git log --oneline --format='#{format}'"
       `#{command}`
     end
 

@@ -1,6 +1,7 @@
 require_relative './validate_url'
 require_relative './get_commits_from_url'
 require_relative './parse_commits'
+require_relative './commit_constants'
 require 'will_paginate/array'
 require 'result'
 
@@ -37,7 +38,9 @@ module CommitLister
     private
 
     def get_commits_from_url
-      CommitLister::GetCommitsFromUrl.new(url).run
+      CommitLister::GetCommitsFromUrl.new(
+          url, CommitConstants::COMMIT_FORMAT
+      ).run
     end
 
     def paginate_log!(commit_array)
@@ -45,7 +48,9 @@ module CommitLister
     end
 
     def parse_into_list(log, separator)
-      CommitLister::ParseCommits.new(log, separator).run
+      CommitLister::ParseCommits.new(
+          log, separator, CommitConstants::COMMIT_FORMAT
+      ).run
     end
 
     def valid_url?(url)

@@ -13,7 +13,7 @@ RSpec.describe CommitLister::Lister do
     expect(result.successful).to eql(true)
     expect(result.data).to be_instance_of(Array)
     expect(first_commit).to be_instance_of(Hash)
-    expect(first_commit.keys).to match_array([:hash, :message, :author, :date])
+    expect(first_commit.keys).to include(:hash, :message, :author, :date)
     expect(first_commit[:date]).to be_instance_of(DateTime)
     expect(result.data.size).to eql(10)
   end
@@ -25,7 +25,7 @@ RSpec.describe CommitLister::Lister do
     expect(result.successful).to eql(true)
     expect(result.data).to be_instance_of(Array)
     expect(first_commit).to be_instance_of(Hash)
-    expect(first_commit.keys).to match_array([:hash, :message, :author, :date])
+    expect(first_commit.keys).to include(:hash, :message, :author, :date)
     expect(first_commit[:date]).to be_instance_of(DateTime)
     expect(result.data.size).to eql(2)
   end

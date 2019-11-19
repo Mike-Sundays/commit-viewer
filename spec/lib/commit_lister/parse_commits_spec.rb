@@ -9,17 +9,21 @@ RSpec.describe CommitLister::ParseCommits do
   end
 
   it "should return a list of commits for valid input" do
-    result = CommitLister::ParseCommits.new(@valid_log, ',').run
+    result = CommitLister::ParseCommits.new(
+        @valid_log, ',', [:hash, :message, :author, :date]
+    ).run
     first_commit = result.first
 
     expect(result).to be_instance_of(Array)
     expect(first_commit).to be_instance_of(Hash)
-    expect(first_commit.keys).to match_array([:hash, :message, :author, :date])
+    expect(first_commit.keys).to include(:hash, :message, :author, :date)
     expect(first_commit[:date]).to be_instance_of(DateTime)
   end
 
   it "should return an empty list for no commits" do
-    result = CommitLister::ParseCommits.new([], ",").run
+    result = CommitLister::ParseCommits.new(
+        [], ",", [:hash, :message, :author, :date]
+    ).run
     expect(result).to be_instance_of(Array)
     expect(result.size).to eql(0)
   end
