@@ -69,7 +69,7 @@ module CommitLister
     end
 
     def cleanup(dir)
-      DirectoryUtils.change_directory("/tmp")
+      2.times {DirectoryUtils.change_directory("..")}
       DirectoryUtils.remove_directory(dir)
     end
   end
