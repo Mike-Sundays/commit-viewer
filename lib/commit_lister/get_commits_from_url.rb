@@ -1,5 +1,6 @@
 require 'tmpdir'
-require 'fileutils'
+require 'net/http'
+require 'directory_utils'
 
 module CommitLister
   class GitCloneError < StandardError
@@ -8,9 +9,15 @@ module CommitLister
     end
   end
 
+  class NoRepositoryError < StandardError
+    def message
+      "The repository you provided does not exist"
+    end
+  end
+
   class GetCommitsFromUrl
 
-    DEFAULT_TIMEOUT_SECONDS = "60".freeze
+    DEFAULT_TIMEOUT_SECONDS = "30".freeze
 
     attr_reader :url
 
@@ -20,47 +27,45 @@ module CommitLister
 
     def run
       project_name = parse_project_name(url)
-      tmp_dir = create_temporary_directory
+      tmp_dir = nil
+
       begin
-        change_directory(tmp_dir)
-        if clone_repo(url, DEFAULT_TIMEOUT_SECONDS)
-          wait_until_directory_is_cloned(project_name)
-          change_directory(project_name)
-          log = get_commits
-        else
-          raise GitCloneError
-        end
+        raise NoRepositoryError unless repo_exists?
+
+        tmp_dir = DirectoryUtils.create_temporary_directory
+        DirectoryUtils.change_directory(tmp_dir)
+
+        raise GitCloneError unless clone_repo(url)
+
+        wait_until_directory_is_cloned(project_name)
+        DirectoryUtils.change_directory(project_name)
+
+        log = get_commits
 
         {:success => true, :data => log, :error => nil}
       rescue StandardError => e
         {:success => false, :data => nil, :error => e.message}
       ensure
-        remove_directory(tmp_dir)
+        cleanup(tmp_dir)
       end
     end
 
     private
 
-    def create_temporary_directory
-      Dir.mktmpdir(nil, "#{Dir.pwd}/tmp/repos")
-    end
-
-    def change_directory(path)
-      Dir.chdir(path)
-    end
-
-    def remove_directory(path)
-      FileUtils.remove_entry path
+    def repo_exists?
+      url_without_extension = url.split(".git")[0]
+      response = Net::HTTP.get_response(URI(url_without_extension))
+      response.code == "200" ? true : false
     end
 
     def parse_project_name(url)
       url.split('/')[-1].split('.')[0]
     end
 
-    def clone_repo(url, timeout_seconds)
+    def clone_repo(url)
       # see https://stackoverflow.com/questions/1936633
       # for justification of this syntax
-      system("timeout", "#{timeout_seconds}", "git", "clone", "#{url}")
+      system("timeout", "#{DEFAULT_TIMEOUT_SECONDS}", "git", "clone", "#{url}")
     end
 
     def wait_until_directory_is_cloned(directory)
@@ -74,6 +79,11 @@ module CommitLister
     def get_commits
       command = "git log --oneline --format='%H,%s,%an,%ad'"
       `#{command}`
+    end
+
+    def cleanup(dir)
+      DirectoryUtils.change_directory("/tmp")
+      DirectoryUtils.remove_directory(dir)
     end
   end
 end

@@ -23,16 +23,14 @@ RSpec.describe "get commits from repo endpoint", :type => :request do
   end
 
   context 'given an invalid url' do
-    it 'returns a server error response' do
+    it 'returns a bad request response' do
       repo_url = "http://github.com/Mike-Sundays/simple-notes-react.git"
       query_string = "?url=#{repo_url}"
 
       get "/commits/#{query_string}"
 
-      errors = JSON.parse(response.body)["errors"]
-
       expect(response.content_type).to eq("application/json; charset=utf-8")
-      expect(response).to have_http_status(500)
+      expect(response).to have_http_status(400)
     end
   end
 
