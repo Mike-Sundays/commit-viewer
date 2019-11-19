@@ -1,20 +1,9 @@
 require 'tmpdir'
 require 'net/http'
 require 'directory_utils'
+require_relative './git_wrapper'
 
 module CommitLister
-  class GitCloneError < StandardError
-    def message
-      "Error in git clone command, exit status #{$?.exitstatus}"
-    end
-  end
-
-  class NoRepositoryError < StandardError
-    def message
-      "The repository you provided does not exist"
-    end
-  end
-
   class GetCommitsFromUrl
 
     DEFAULT_TIMEOUT_SECONDS = "30".freeze
@@ -30,17 +19,17 @@ module CommitLister
       tmp_dir = nil
 
       begin
-        raise NoRepositoryError unless repo_exists?
+        raise GitWrapper::NoRepositoryError unless repo_exists?
 
-        tmp_dir = DirectoryUtils.create_temporary_directory
+        tmp_dir = setup_temp_folder
         DirectoryUtils.change_directory(tmp_dir)
 
-        raise GitCloneError unless clone_repo(url)
+        raise GitWrapper::GitCloneError unless clone_repo(url)
 
         wait_until_directory_is_cloned(project_name)
         DirectoryUtils.change_directory(project_name)
 
-        log = get_commits.split("\n")
+        log = get_array_of_commits
 
         {:success => true, :data => log, :error => nil}
       rescue StandardError => e
@@ -53,32 +42,29 @@ module CommitLister
     private
 
     def repo_exists?
-      url_without_extension = url.split(".git")[0]
-      response = Net::HTTP.get_response(URI(url_without_extension))
-      response.code == "200" ? true : false
+      GitWrapper::Commands.repo_exists?(url)
     end
 
     def parse_project_name(url)
       url.split('/')[-1].split('.')[0]
     end
 
+    def setup_temp_folder
+      DirectoryUtils.create_temporary_directory
+    end
+
     def clone_repo(url)
-      # see https://stackoverflow.com/questions/1936633
-      # for justification of this syntax
-      system("timeout", "#{DEFAULT_TIMEOUT_SECONDS}", "git", "clone", "#{url}")
+      GitWrapper::Commands.clone_repo(url, DEFAULT_TIMEOUT_SECONDS)
     end
 
     def wait_until_directory_is_cloned(directory)
       # protecting against the clone command returning success before
       # having cloned the repo completely
-      until File.directory?(directory)
-        sleep(1)
-      end
+      sleep(1) until DirectoryUtils.directory_exists?(directory)
     end
 
-    def get_commits
-      command = "git log --oneline --format='%H,%s,%an,%ad'"
-      `#{command}`
+    def get_array_of_commits
+      GitWrapper::Commands.get_list_of_commits_oneliner.split("\n")
     end
 
     def cleanup(dir)

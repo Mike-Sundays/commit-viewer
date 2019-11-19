@@ -12,4 +12,8 @@ class DirectoryUtils
   def self.remove_directory(path)
     FileUtils.remove_entry path
   end
+
+  def self.directory_exists?(dir)
+    File.directory?(dir)
+  end
 end
