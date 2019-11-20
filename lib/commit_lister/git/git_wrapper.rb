@@ -12,10 +12,10 @@ module GitWrapper
   end
 
   class Commands
-    def self.clone_repo(url, timeout)
+    def self.clone_repo(url, timeout, dir)
       # see https://stackoverflow.com/questions/1936633
       # for justification of this syntax
-      system("timeout", "#{timeout}", "git", "clone", "#{url}")
+      system("timeout", "#{timeout}", "git", "clone", "#{url}", dir)
     end
 
     def self.get_commits(format)

@@ -1,5 +1,4 @@
 require 'tmpdir'
-require 'net/http'
 require 'directory_utils'
 require_relative './git_wrapper'
 require_relative '../commit_constants'
@@ -18,19 +17,22 @@ module CommitLister
     end
 
     def run
-      tmp_dir = nil
+      project_path = nil
 
       begin
         raise GitWrapper::NoRepositoryError unless repo_exists?
 
-        tmp_dir = download_repo_into_tmp_folder
+        project_path = download_repo_into_tmp_folder
+
+        DirectoryUtils.change_directory(project_path)
+
         log = get_array_of_commits
 
         Result.success(log)
       rescue StandardError => e
         Result.failure(e.message, true)
       ensure
-        cleanup(tmp_dir)
+        cleanup(project_path)
       end
     end
 
@@ -44,28 +46,21 @@ module CommitLister
       project_name = parse_project_name
       tmp_dir = DirectoryUtils.create_temporary_directory
 
-      DirectoryUtils.change_directory(tmp_dir)
+      project_path = File.join(tmp_dir, project_name)
 
-      raise GitWrapper::GitCloneError unless clone_repo
+      raise GitWrapper::GitCloneError unless
+          cloned_repo?(project_path) &&
+          DirectoryUtils.directory_exists?(project_path)
 
-      wait_until_directory_is_cloned(project_name)
-      DirectoryUtils.change_directory(project_name)
-
-      tmp_dir
+      project_path
     end
 
     def parse_project_name
       url.split('/')[-1].split('.')[0]
     end
 
-    def clone_repo
-      GitWrapper::Commands.clone_repo(url, DEFAULT_TIMEOUT_SECONDS)
-    end
-
-    def wait_until_directory_is_cloned(directory)
-      # protecting against the clone command returning success before
-      # having cloned the repo completely
-      sleep(1) until DirectoryUtils.directory_exists?(directory)
+    def cloned_repo?(dir)
+      GitWrapper::Commands.clone_repo(url, DEFAULT_TIMEOUT_SECONDS, dir)
     end
 
     def get_array_of_commits
