@@ -1,5 +1,5 @@
 # these are tests that communicate directly with github
-require './lib/commit_lister/lister'
+require './lib/commit_lister/git_cli/lister'
 
 RSpec.describe CommitLister::Lister do
   before :all do

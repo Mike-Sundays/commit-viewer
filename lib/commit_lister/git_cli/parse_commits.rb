@@ -1,6 +1,6 @@
 require 'tmpdir'
 require 'date'
-require_relative '../commit_constants'
+require_relative './commit_constants'
 
 module CommitLister
 

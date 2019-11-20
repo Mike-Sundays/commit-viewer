@@ -1,4 +1,4 @@
-require './lib/commit_lister/lister'
+require './lib/commit_lister/git_cli/lister'
 class CommitsController < ApplicationController
   def index
     result = CommitLister::Lister.new(

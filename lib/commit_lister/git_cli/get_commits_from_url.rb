@@ -1,7 +1,7 @@
 require 'tmpdir'
 require 'directory_utils'
 require_relative './git_wrapper'
-require_relative '../commit_constants'
+require_relative './commit_constants'
 require 'result'
 
 module CommitLister
