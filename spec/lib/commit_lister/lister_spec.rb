@@ -1,13 +1,13 @@
 # these are tests that communicate directly with github
 require './lib/commit_lister/git_cli/lister'
 
-RSpec.describe CommitLister::Lister do
+RSpec.describe CommitListerCli::Lister do
   before :all do
     @url = "https://github.com/Mike-Sundays/simple-notes-react.git"
   end
 
   it "should return a default paginated list of commits" do
-    result = CommitLister::Lister.new(@url).run
+    result = CommitListerCli::Lister.new(@url).run
     first_commit = result.data.first
 
     expect(result.successful).to eql(true)
@@ -19,7 +19,7 @@ RSpec.describe CommitLister::Lister do
   end
 
   it "should return list of commits with 2 per page" do
-    result = CommitLister::Lister.new(@url, 1, 2).run
+    result = CommitListerCli::Lister.new(@url, 1, 2).run
     first_commit = result.data.first
 
     expect(result.successful).to eql(true)
@@ -31,21 +31,21 @@ RSpec.describe CommitLister::Lister do
   end
 
   it "should return a failure if url is invalid" do
-    result = CommitLister::Lister.new("").run
+    result = CommitListerCli::Lister.new("").run
 
     expect(result.successful).to eql(false)
     expect(result.error).to be
   end
 
   it "should return a failure if repo does not exist" do
-    result = CommitLister::Lister.new("https://github.com/Mike-Sundays/iehgsie.git").run
+    result = CommitListerCli::Lister.new("https://github.com/Mike-Sundays/iehgsie.git").run
 
     expect(result.successful).to eql(false)
     expect(result.error).to be
   end
 
   it "should return a failure for injected bash command" do
-    result = CommitLister::Lister.new(
+    result = CommitListerCli::Lister.new(
         "https://github.com/Mike-Sundays/simple-notes-react.git && touch badfile.txt"
     ).run
 

@@ -2,7 +2,7 @@ require 'tmpdir'
 require 'date'
 require_relative './commit_constants'
 
-module CommitLister
+module CommitListerCli
 
   # parses pretty printed git logs, with a commit in each line
   class ParseCommits

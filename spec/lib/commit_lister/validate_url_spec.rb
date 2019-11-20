@@ -1,10 +1,10 @@
 require './lib/commit_lister/validation/validate_url'
 
-RSpec.describe CommitLister::ValidateUrl do
+RSpec.describe CommitListerCli::ValidateUrl do
   it "should return true for valid url" do
     url = "https://github.com/Mike-Sundays/simple-notes-react.git"
 
-    result = CommitLister::ValidateUrl.new(url).validate
+    result = CommitListerCli::ValidateUrl.new(url).validate
 
     expect(result[:valid]).to eql(true)
   end
@@ -12,7 +12,7 @@ RSpec.describe CommitLister::ValidateUrl do
   it "should return false for url with no .git" do
     url = "https://github.com/Mike-Sundays/simple-notes-react"
 
-    result = CommitLister::ValidateUrl.new(url).validate
+    result = CommitListerCli::ValidateUrl.new(url).validate
 
     expect(result[:valid]).to eql(false)
   end
@@ -20,7 +20,7 @@ RSpec.describe CommitLister::ValidateUrl do
   it "should return false for url with no https" do
     url = "http://github.com/Mike-Sundays/simple-notes-react"
 
-    result = CommitLister::ValidateUrl.new(url).validate
+    result = CommitListerCli::ValidateUrl.new(url).validate
 
     expect(result[:valid]).to eql(false)
   end
@@ -28,7 +28,7 @@ RSpec.describe CommitLister::ValidateUrl do
   it "should return false for url not from github" do
     url = "https://gitfake.com/Mike-Sundays/simple-notes-react"
 
-    result = CommitLister::ValidateUrl.new(url).validate
+    result = CommitListerCli::ValidateUrl.new(url).validate
 
     expect(result[:valid]).to eql(false)
   end

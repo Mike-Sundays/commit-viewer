@@ -6,7 +6,7 @@ require_relative './commit_constants'
 require 'will_paginate/array'
 require 'result'
 
-module CommitLister
+module CommitListerCli
   class Lister
 
     DEFAULT_PAGE = 1.freeze
@@ -45,7 +45,7 @@ module CommitLister
     end
 
     def get_commits_from_url
-      CommitLister::GetCommitsFromUrl.new(
+      CommitListerCli::GetCommitsFromUrl.new(
           url, CommitConstants::COMMIT_FORMAT
       ).run
     end
@@ -55,13 +55,13 @@ module CommitLister
     end
 
     def parse_into_list(log, separator)
-      CommitLister::ParseCommits.new(
+      CommitListerCli::ParseCommits.new(
           log, separator, CommitConstants::COMMIT_FORMAT
       ).run
     end
 
     def valid_url?
-      CommitLister::ValidateUrl.new(url).validate
+      CommitListerCli::ValidateUrl.new(url).validate
     end
   end
 end

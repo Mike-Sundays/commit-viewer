@@ -1,6 +1,6 @@
 require './lib/commit_lister/git_cli/parse_commits'
 
-RSpec.describe CommitLister::ParseCommits do
+RSpec.describe CommitListerCli::ParseCommits do
   before :all do
     @valid_log = [
         '0e94cd1,add readme,mike-sundays,Tue Nov 12 12:21:11 2019 +0000',
@@ -9,7 +9,7 @@ RSpec.describe CommitLister::ParseCommits do
   end
 
   it "should return a list of commits for valid input" do
-    result = CommitLister::ParseCommits.new(
+    result = CommitListerCli::ParseCommits.new(
         @valid_log, ',', [:hash, :message, :author, :date]
     ).run
     first_commit = result.first
@@ -21,7 +21,7 @@ RSpec.describe CommitLister::ParseCommits do
   end
 
   it "should return an empty list for no commits" do
-    result = CommitLister::ParseCommits.new(
+    result = CommitListerCli::ParseCommits.new(
         [], ",", [:hash, :message, :author, :date]
     ).run
     expect(result).to be_instance_of(Array)

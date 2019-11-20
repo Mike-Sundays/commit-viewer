@@ -4,7 +4,7 @@ require_relative './git_wrapper'
 require_relative './commit_constants'
 require 'result'
 
-module CommitLister
+module CommitListerCli
   class GetCommitsFromUrl
 
     DEFAULT_TIMEOUT_SECONDS = "30".freeze
