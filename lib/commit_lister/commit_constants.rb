@@ -11,4 +11,5 @@ class CommitConstants
       :date => "%ad",
       :email => "%ae"
   }
+  FORMAT_PARAMETERS_SEPARATOR = ","
 end

@@ -22,11 +22,9 @@ module CommitLister
 
     def run
       begin
-        validation = valid_url?(url)
+        validation = valid_url?
         if validation[:valid]
-          result = get_commits_from_url
-          paginated_log = paginate_log!(result.data)
-          list = parse_into_list(paginated_log, ',')
+          list = process_commits_from_url
           Result.success(list)
         else
           Result.failure(validation[:error], false)
@@ -37,6 +35,14 @@ module CommitLister
     end
 
     private
+
+    def process_commits_from_url
+      result = get_commits_from_url
+      paginated_log = paginate_log!(result.data)
+      parse_into_list(
+          paginated_log, CommitConstants::FORMAT_PARAMETERS_SEPARATOR
+      )
+    end
 
     def get_commits_from_url
       CommitLister::GetCommitsFromUrl.new(
@@ -54,7 +60,7 @@ module CommitLister
       ).run
     end
 
-    def valid_url?(url)
+    def valid_url?
       CommitLister::ValidateUrl.new(url).validate
     end
   end

@@ -18,20 +18,12 @@ module CommitLister
     end
 
     def run
-      project_name = parse_project_name(url)
       tmp_dir = nil
 
       begin
         raise GitWrapper::NoRepositoryError unless repo_exists?
 
-        tmp_dir = setup_temp_folder
-        DirectoryUtils.change_directory(tmp_dir)
-
-        raise GitWrapper::GitCloneError unless clone_repo(url)
-
-        wait_until_directory_is_cloned(project_name)
-        DirectoryUtils.change_directory(project_name)
-
+        tmp_dir = download_repo_into_tmp_folder
         log = get_array_of_commits
 
         Result.success(log)
@@ -48,15 +40,25 @@ module CommitLister
       GitWrapper::Commands.repo_exists?(url)
     end
 
-    def parse_project_name(url)
+    def download_repo_into_tmp_folder
+      project_name = parse_project_name
+      tmp_dir = DirectoryUtils.create_temporary_directory
+
+      DirectoryUtils.change_directory(tmp_dir)
+
+      raise GitWrapper::GitCloneError unless clone_repo
+
+      wait_until_directory_is_cloned(project_name)
+      DirectoryUtils.change_directory(project_name)
+
+      tmp_dir
+    end
+
+    def parse_project_name
       url.split('/')[-1].split('.')[0]
     end
 
-    def setup_temp_folder
-      DirectoryUtils.create_temporary_directory
-    end
-
-    def clone_repo(url)
+    def clone_repo
       GitWrapper::Commands.clone_repo(url, DEFAULT_TIMEOUT_SECONDS)
     end
 
@@ -73,7 +75,8 @@ module CommitLister
 
     def format_for_git
       correspondence = CommitConstants::FORMAT_CORRESPONDENCE
-      format.map{|parameter| correspondence[parameter]}.join(",")
+      format.map{|parameter| correspondence[parameter] }
+          .join(CommitConstants::FORMAT_PARAMETERS_SEPARATOR)
     end
 
     def cleanup(dir)

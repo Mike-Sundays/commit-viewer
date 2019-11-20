@@ -15,16 +15,23 @@ module CommitLister
     def validate
       parsed_url = parse
       if !valid_https?(parsed_url)
-        {:valid => false, :error => ValidateUrlMessages::NO_HTTPS}
+        validation_result(false, ValidateUrlMessages::NO_HTTPS)
+
       elsif !valid_extension?(parsed_url)
-        {:valid => false, :error => ValidateUrlMessages::NO_GIT_EXTENSION}
+        validation_result(false, ValidateUrlMessages::NO_GIT_EXTENSION)
+
       elsif !valid_host?(parsed_url)
-        {:valid => false, :error => ValidateUrlMessages::NOT_GITHUB}
+        validation_result(false, ValidateUrlMessages::NOT_GITHUB)
+
       else
-        {:valid => true, :error => ""}
+        validation_result(true, "")
       end
     rescue URI::Error => e
-        {:valid => false, :error => e.message }
+        validation_result(false, e.message)
+    end
+
+    def validation_result(valid, message)
+      {:valid => valid, :error => message}
     end
 
     def parse
