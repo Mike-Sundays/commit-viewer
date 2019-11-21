@@ -10,4 +10,9 @@ class UrlHelper
   def self.url_without_extension(url)
     url.split(".git")[0]
   end
+
+  def self.url_returns_ok?(url)
+    response = HTTParty.get(url)
+    response.code == 200 ? true : false
+  end
 end

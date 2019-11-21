@@ -24,10 +24,5 @@ module GitWrapper
       command = "git log --oneline --format='#{format}'"
       `#{command}`
     end
-
-    def self.repo_exists?(url)
-      response = HTTParty.get(url)
-      response.code == 200 ? true : false
-    end
   end
 end

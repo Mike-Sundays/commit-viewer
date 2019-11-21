@@ -12,4 +12,11 @@ class CommitConstants
       :email => "%ae"
   }
   FORMAT_PARAMETERS_SEPARATOR = ","
+
+  def self.format_string_for_git_log
+    format = COMMIT_FORMAT.clone
+    correspondence = FORMAT_CORRESPONDENCE
+    format.map { |parameter| correspondence[parameter] }
+        .join(FORMAT_PARAMETERS_SEPARATOR)
+  end
 end

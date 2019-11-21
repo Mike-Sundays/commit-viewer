@@ -11,10 +11,9 @@ module CommitListerCli
 
     DEFAULT_TIMEOUT_SECONDS = "30".freeze
 
-    attr_reader :format, :page, :per_page
+    attr_reader :page, :per_page
 
     def initialize(page, per_page)
-      @format = CommitConstants::COMMIT_FORMAT
       @page = page
       @per_page = per_page
     end
@@ -26,11 +25,9 @@ module CommitListerCli
         raise GitWrapper::NoRepositoryError unless repo_exists?(url)
 
         project_path = download_repo_into_tmp_folder(url)
-
         DirectoryUtils.change_directory(project_path)
 
-        log = get_array_of_commits
-
+        log = extract_local_log
         paginated_log = paginate_result(log)
 
         Result.success(paginated_log)
@@ -45,16 +42,15 @@ module CommitListerCli
 
     def repo_exists?(url)
       url_without_extension = UrlHelper.url_without_extension(url)
-      GitWrapper::Commands.repo_exists?(url_without_extension)
+      UrlHelper.url_returns_ok?(url_without_extension)
     end
 
     def download_repo_into_tmp_folder(url)
       project_name = parse_project_name(url)
-      tmp_dir = DirectoryUtils.create_temporary_directory
+      project_path = DirectoryUtils.temporary_directory_for_project(project_name)
 
-      project_path = File.join(tmp_dir, project_name)
-
-      raise GitWrapper::GitCloneError unless cloned_repo?(project_path, url) &&
+      raise GitWrapper::GitCloneError unless
+          cloned_repo?(project_path, url) &&
           DirectoryUtils.directory_exists?(project_path)
 
       project_path
@@ -68,15 +64,12 @@ module CommitListerCli
       GitWrapper::Commands.clone_repo(url, DEFAULT_TIMEOUT_SECONDS, dir)
     end
 
-    def get_array_of_commits
-      commits = GitWrapper::Commands.get_commits(format_for_git)
-      commits.split("\n")
+    def extract_local_log
+      GitWrapper::Commands.get_commits(format_for_git).split("\n")
     end
 
     def format_for_git
-      correspondence = CommitConstants::FORMAT_CORRESPONDENCE
-      format.map { |parameter| correspondence[parameter] }
-          .join(CommitConstants::FORMAT_PARAMETERS_SEPARATOR)
+      CommitConstants.format_string_for_git_log
     end
 
     def paginate_result(log)
@@ -84,8 +77,7 @@ module CommitListerCli
     end
 
     def cleanup(dir)
-      2.times { DirectoryUtils.change_directory("..") }
-      DirectoryUtils.remove_directory(dir)
+      DirectoryUtils.cleanup_temp_dir(dir)
     end
   end
 end

@@ -46,7 +46,7 @@ module CommitListerApi
     end
 
     def request_github_api(url_to_request, project)
-      headers = get_headers(project)
+      headers = build_request_headers(project)
       response = HTTParty.get(
           url_to_request, headers: headers,
           query: query_string,
@@ -55,7 +55,7 @@ module CommitListerApi
       response.body
     end
 
-    def get_headers(project)
+    def build_request_headers(project)
       {
           "Accept": "application/vnd.github.v3+json",
           "User-Agent": project
