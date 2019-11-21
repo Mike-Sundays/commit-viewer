@@ -32,4 +32,12 @@ RSpec.describe CommitListerCli::ValidateUrl do
 
     expect(result[:valid]).to eql(false)
   end
+
+  it "should return a failure for injected bash command" do
+    url = "https://gitfake.com/Mike-Sundays/simple-notes-react && touch badfile.txt"
+
+    result = CommitListerCli::ValidateUrl.new(url).validate
+
+    expect(result[:valid]).to eql(false)
+  end
 end

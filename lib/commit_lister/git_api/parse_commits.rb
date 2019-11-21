@@ -1,14 +1,10 @@
 require 'date'
+
 module CommitListerApi
   class ParseCommits
-    attr_reader :log
-
-    def initialize(log)
-      @log = JSON.parse(log)
-    end
-
-    def run
+    def run(response)
       commits = []
+      log = JSON.parse(response)
 
       log.each do |element|
         commits << parse_commit(element)

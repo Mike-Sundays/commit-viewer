@@ -1,7 +1,7 @@
-require './lib/commit_lister/git_cli/lister'
+require './lib/commit_lister/viewer_orchestrator'
 class CommitsController < ApplicationController
   def index
-    result = CommitListerCli::Lister.new(
+    result = CommitLister::ViewerOrchestrator.new(
         safe_params["url"],
         safe_params["page"],
         safe_params["per_page"]

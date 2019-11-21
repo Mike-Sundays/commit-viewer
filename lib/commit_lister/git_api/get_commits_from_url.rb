@@ -10,19 +10,18 @@ module CommitListerApi
     REPO_PLACEHOLDER = ":repo"
     URL_API = "https://api.github.com/repos/#{OWNER_PLACEHOLDER}/#{REPO_PLACEHOLDER}/commits"
 
-    attr_reader :url, :page, :per_page
+    attr_reader :page, :per_page
 
-    def initialize(url,page, per_page)
-      @url = url
+    def initialize(page, per_page)
       @page = page
       @per_page = per_page
     end
 
-    def run
+    def run(url)
       begin
-        owner, project = get_owner, parse_project_name
-        url = build_url(owner, project)
-        response = request_github_api(url, project)
+        owner, project = get_owner(url), parse_project_name(url)
+        url_to_request = build_url(owner, project)
+        response = request_github_api(url_to_request, project)
 
         Result.success(response)
       rescue StandardError => e
@@ -32,11 +31,11 @@ module CommitListerApi
 
     private
 
-    def get_owner
+    def get_owner(url)
       UrlHelper.get_owner(url)
     end
 
-    def parse_project_name
+    def parse_project_name(url)
       UrlHelper.parse_project_name(url)
     end
 
@@ -46,10 +45,10 @@ module CommitListerApi
           gsub!(REPO_PLACEHOLDER, project)
     end
 
-    def request_github_api(url, project)
+    def request_github_api(url_to_request, project)
       headers = get_headers(project)
       response = HTTParty.get(
-          url, headers: headers,
+          url_to_request, headers: headers,
           query: query_string,
           timeout: DEFAULT_TIMEOUT_SECONDS
       )

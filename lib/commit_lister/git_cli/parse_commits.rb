@@ -6,15 +6,14 @@ module CommitListerCli
 
   # parses pretty printed git logs, with a commit in each line
   class ParseCommits
-    attr_reader :log, :separator, :format
+    attr_reader :separator, :format
 
-    def initialize(log, separator, format)
-      @log = log
-      @separator = separator
-      @format = format
+    def initialize
+      @separator = CommitConstants::FORMAT_PARAMETERS_SEPARATOR
+      @format = CommitConstants::COMMIT_FORMAT
     end
 
-    def run
+    def run(log)
       log.map { |line| parse_commit(line) }
     end
 
