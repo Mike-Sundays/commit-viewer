@@ -29,12 +29,26 @@ module CommitLister
     private
 
     def process_commits_from_url
-      result = getter.run(url)
-      parser.run(result.data)
+      commits = []
+      result = get_commits
+
+      result.each do |element|
+        commits << parse_commits(element)
+      end
+
+      commits
     end
 
     def valid_url?
       CommitListerCli::ValidateUrl.new(url).validate
+    end
+
+    def get_commits
+      getter.run(url).data
+    end
+
+    def parse_commits(element)
+      parser.run(element)
     end
   end
 end

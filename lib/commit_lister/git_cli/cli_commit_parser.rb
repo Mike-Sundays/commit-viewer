@@ -2,10 +2,10 @@ require 'tmpdir'
 require 'date'
 require_relative './git_log_cli_format'
 
-module CommitListerCli
+module CommitLister
 
   # parses pretty printed git logs, with a commit in each line
-  class ParseCommits
+  class CliCommitParser
     attr_reader :separator, :format
 
     def initialize
@@ -13,20 +13,18 @@ module CommitListerCli
       @format = GitLogCliFormat::COMMIT_FORMAT_TO_OUTPUT
     end
 
-    def run(log)
-      log.map { |line| parse_commit(line) }
+    def run(element)
+      commit = {}
+      unless element.empty?
+        commit = fill_in_commit_info(element, commit)
+        commit[:date] = parse_date_to_datetime(commit)
+      end
+      commit
     end
 
     private
 
-    def parse_commit(line)
-      commit = fill_in_commit_info(line)
-      commit[:date] = parse_date_to_datetime(commit)
-      commit
-    end
-
-    def fill_in_commit_info(line)
-      commit = {}
+    def fill_in_commit_info(line, commit)
       split_line = line.split(separator)
 
       format.map do |parameter|

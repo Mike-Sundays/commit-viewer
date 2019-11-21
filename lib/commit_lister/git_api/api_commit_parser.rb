@@ -1,24 +1,14 @@
 require 'date'
 
-module CommitListerApi
-  class ParseCommits
-    def run(log)
-      commits = []
-
-      log.each do |element|
-        commits << parse_commit(element)
-      end
-
-      commits
-    end
-
-    private
-
-    def parse_commit(element)
+module CommitLister
+  class ApiCommitParser
+    def run(element)
       commit = extract_parameters(element)
       commit[:date] = parse_date_to_datetime(commit)
       commit
     end
+
+    private
 
     def extract_parameters(element)
       commit = {}

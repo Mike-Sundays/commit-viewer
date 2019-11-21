@@ -1,6 +1,6 @@
 # these are tests that communicate directly with github
 require './lib/commit_lister/lister'
-require './lib/commit_lister/git_api/parse_commits'
+require './lib/commit_lister/git_api/api_commit_parser'
 require './lib/commit_lister/git_api/get_commits_from_url'
 
 RSpec.describe CommitLister::Lister do
@@ -8,7 +8,7 @@ RSpec.describe CommitLister::Lister do
     @url = "https://github.com/Mike-Sundays/simple-notes-react.git"
     @page = 1
     @per_page = 10
-    @parser = CommitListerApi::ParseCommits.new
+    @parser = CommitLister::ApiCommitParser.new
     @getter = CommitListerApi::GetCommitsFromUrl.new(@page, @per_page)
   end
 

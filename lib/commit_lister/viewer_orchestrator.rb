@@ -1,8 +1,8 @@
 require_relative './lister'
 require_relative './git_api/get_commits_from_url'
-require_relative './git_api/parse_commits'
+require_relative './git_api/api_commit_parser'
 require_relative './git_cli/get_commits_from_url'
-require_relative './git_cli/parse_commits'
+require_relative './git_cli/cli_commit_parser'
 
 module CommitLister
   class ViewerOrchestrator
@@ -47,7 +47,7 @@ module CommitLister
     end
 
     def parser_api
-      CommitListerApi::ParseCommits.new
+      CommitLister::ApiCommitParser.new
     end
 
     def getter_cli
@@ -57,7 +57,7 @@ module CommitLister
     end
 
     def parser_cli
-      CommitListerCli::ParseCommits.new
+      CommitLister::CliCommitParser.new
     end
   end
 end
