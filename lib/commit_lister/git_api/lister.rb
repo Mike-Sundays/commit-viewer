@@ -1,66 +1,55 @@
-require 'httparty'
+require_relative '../validation/validate_url'
+require_relative './parse_commits'
+require_relative './get_commits_from_url'
+require 'result'
 
 module CommitListerApi
   class Lister
     attr_reader :url
 
-    OWNER_PLACEHOLDER = ":owner"
-    REPO_PLACEHOLDER = ":repo"
-    URL_API = "https://api.github.com/repos/#{OWNER_PLACEHOLDER}/#{REPO_PLACEHOLDER}/commits"
+    DEFAULT_PAGE = 1.freeze
+    DEFAULT_PER_PAGE = 10.freeze
 
-    def initialize(url)
+    attr_reader :url, :page, :per_page
+
+    def initialize(url, page = DEFAULT_PAGE, per_page = DEFAULT_PER_PAGE)
       @url = url
+      @page = page || DEFAULT_PAGE
+      @per_page = per_page || DEFAULT_PER_PAGE
     end
 
     def run
-      owner, project = get_owner, parse_project_name
-      url = build_url(owner, project)
-      response = request_github_api(url, project)
-      parsed_response = JSON.parse(response)
-      commits = extract_commits(parsed_response)
+
+      begin
+        validation = valid_url?
+        if validation[:valid]
+          list = process_commits_from_url
+          Result.success(list)
+        else
+          Result.failure(validation[:error], false)
+        end
+      rescue StandardError => e
+        Result.failure(e.message, true)
+      end
     end
 
     private
 
-    def request_github_api(url, project)
-      response = HTTParty.get(url, headers: {
-          "Accept": "application/vnd.github.v3+json",
-          "User-Agent": project
-      })
-      response.body
+    def valid_url?
+      CommitListerCli::ValidateUrl.new(url).validate
     end
 
-    def get_owner
-      url.split('/')[-2]
+    def process_commits_from_url
+      response = request_github_api
+      parse_into_list(response.data)
     end
 
-    def parse_project_name
-      url.split('/')[-1].split('.')[0]
+    def request_github_api
+      CommitListerApi::GetCommitsFromUrl.new(url, page, per_page).run
     end
 
-    def build_url(owner, project)
-      url = URL_API.clone
-      url.gsub!(OWNER_PLACEHOLDER, owner).
-          gsub!(REPO_PLACEHOLDER, project)
-    end
-
-    def extract_commits(response)
-      commits = []
-
-      response.each do |element|
-        commits << extract_parameters(element)
-      end
-
-      commits
-    end
-
-    def extract_parameters(element)
-      commit = {}
-      commit[:hash] = element["sha"]
-      commit[:author] = element["commit"]["author"]["name"]
-      commit[:message] = element["commit"]["message"]
-      commit[:date] = element["commit"]["author"]["date"]
-      commit
+    def parse_into_list(response)
+      CommitListerApi::ParseCommits.new(response).run
     end
   end
 end
