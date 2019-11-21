@@ -2,8 +2,8 @@ require 'result'
 require 'httparty'
 require_relative '../url_helper'
 
-module CommitListerApi
-  class GetCommitsFromUrl
+module CommitLister
+  class ApiCommitGetter
 
     DEFAULT_TIMEOUT_SECONDS = "30".freeze
     OWNER_PLACEHOLDER = ":owner"

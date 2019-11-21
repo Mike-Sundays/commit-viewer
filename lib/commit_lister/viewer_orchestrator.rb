@@ -1,7 +1,7 @@
 require_relative './lister'
-require_relative './git_api/get_commits_from_url'
+require_relative './git_api/api_commit_getter'
 require_relative './git_api/api_commit_parser'
-require_relative './git_cli/get_commits_from_url'
+require_relative './git_cli/cli_commit_getter'
 require_relative './git_cli/cli_commit_parser'
 
 module CommitLister
@@ -41,7 +41,7 @@ module CommitLister
     end
 
     def getter_api
-      CommitListerApi::GetCommitsFromUrl.new(
+      CommitLister::ApiCommitGetter.new(
           page, per_page
       )
     end
@@ -51,7 +51,7 @@ module CommitLister
     end
 
     def getter_cli
-      CommitListerCli::GetCommitsFromUrl.new(
+      CommitLister::CliCommitGetter.new(
           page, per_page
       )
     end

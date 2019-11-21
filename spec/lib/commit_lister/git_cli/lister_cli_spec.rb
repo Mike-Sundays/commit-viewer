@@ -1,7 +1,7 @@
 # these are tests that communicate directly with github
 require './lib/commit_lister/lister'
 require './lib/commit_lister/git_cli/cli_commit_parser'
-require './lib/commit_lister/git_cli/get_commits_from_url'
+require './lib/commit_lister/git_cli/cli_commit_getter'
 
 RSpec.describe CommitLister::Lister do
   before :all do
@@ -9,7 +9,7 @@ RSpec.describe CommitLister::Lister do
     @page = 1
     @per_page = 10
     @parser = CommitLister::CliCommitParser.new
-    @getter = CommitListerCli::GetCommitsFromUrl.new(@page, @per_page)
+    @getter = CommitLister::CliCommitGetter.new(@page, @per_page)
   end
 
   it "should return paginated list of commits" do

@@ -2,12 +2,12 @@ require 'tmpdir'
 require 'directory_utils'
 require 'result'
 require 'will_paginate/array'
-require_relative './git_wrapper'
+require_relative './git_cli_wrapper'
 require_relative './git_log_cli_format'
 require_relative '../url_helper'
 
-module CommitListerCli
-  class GetCommitsFromUrl
+module CommitLister
+  class CliCommitGetter
 
     DEFAULT_TIMEOUT_SECONDS = "30".freeze
 

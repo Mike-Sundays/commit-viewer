@@ -1,7 +1,7 @@
 # these are tests that communicate directly with github
 require './lib/commit_lister/lister'
 require './lib/commit_lister/git_api/api_commit_parser'
-require './lib/commit_lister/git_api/get_commits_from_url'
+require './lib/commit_lister/git_api/api_commit_getter'
 
 RSpec.describe CommitLister::Lister do
   before :all do
@@ -9,10 +9,11 @@ RSpec.describe CommitLister::Lister do
     @page = 1
     @per_page = 10
     @parser = CommitLister::ApiCommitParser.new
-    @getter = CommitListerApi::GetCommitsFromUrl.new(@page, @per_page)
+    @getter = CommitLister::ApiCommitGetter.new(@page, @per_page)
   end
 
   it "should return a default paginated list of commits" do
+    # this test will fail when I do to many requests due to the github throtler
     result = CommitLister::Lister.new(@url, @parser, @getter).run
     first_commit = result.data.first
 
