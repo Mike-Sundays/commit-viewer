@@ -23,7 +23,7 @@ module CommitListerApi
         url_to_request = build_url(owner, project)
         response = request_github_api(url_to_request, project)
 
-        Result.success(response)
+        Result.success(JSON.parse(response))
       rescue StandardError => e
         Result.failure(e.message, true)
       end
