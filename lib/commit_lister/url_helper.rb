@@ -6,4 +6,8 @@ class UrlHelper
   def self.parse_project_name(url)
     url.split('/')[-1].split('.')[0]
   end
+
+  def self.url_without_extension(url)
+    url.split(".git")[0]
+  end
 end

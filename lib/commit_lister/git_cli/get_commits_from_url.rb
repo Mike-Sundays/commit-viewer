@@ -2,6 +2,7 @@ require 'tmpdir'
 require 'directory_utils'
 require_relative './git_wrapper'
 require_relative './commit_constants'
+require_relative '../url_helper'
 require 'result'
 
 module CommitListerCli
@@ -39,7 +40,8 @@ module CommitListerCli
     private
 
     def repo_exists?
-      GitWrapper::Commands.repo_exists?(url)
+      url_without_extension = UrlHelper.url_without_extension(url)
+      GitWrapper::Commands.repo_exists?(url_without_extension)
     end
 
     def download_repo_into_tmp_folder
@@ -56,7 +58,7 @@ module CommitListerCli
     end
 
     def parse_project_name
-      url.split('/')[-1].split('.')[0]
+      UrlHelper.parse_project_name(url)
     end
 
     def cloned_repo?(dir)

@@ -1,3 +1,5 @@
+require 'httparty'
+
 module GitWrapper
   class GitCloneError < StandardError
     def message
@@ -24,9 +26,8 @@ module GitWrapper
     end
 
     def self.repo_exists?(url)
-      url_without_extension = url.split(".git")[0]
-      response = Net::HTTP.get_response(URI(url_without_extension))
-      response.code == "200" ? true : false
+      response = HTTParty.get(url)
+      response.code == 200 ? true : false
     end
   end
 end
