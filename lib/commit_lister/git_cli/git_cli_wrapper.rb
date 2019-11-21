@@ -28,7 +28,7 @@ module GitWrapper
     private
 
     def self.format_string
-      format = Constants::COMMIT_FORMAT_TO_OUTPUT.clone
+      format = Constants::OUTPUT_FORMAT.clone
       correspondence = Constants::GIT_CLI_FORMAT_CORRESPONDENCE
       format.map { |parameter| correspondence[parameter] }
           .join(Constants::FORMAT_PARAMETERS_SEPARATOR)

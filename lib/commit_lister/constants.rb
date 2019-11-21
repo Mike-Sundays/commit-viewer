@@ -3,7 +3,7 @@
 # For the correspondence with the git % parameters
 # check the git documentation online
 class Constants
-  COMMIT_FORMAT_TO_OUTPUT = [:hash, :message, :author, :date].freeze
+  OUTPUT_FORMAT = [:hash, :message, :author, :date].freeze
 
   GIT_CLI_FORMAT_CORRESPONDENCE = {
       :hash => "%H",

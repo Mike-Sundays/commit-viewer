@@ -13,9 +13,8 @@ RSpec.describe CommitLister::CliCommitParser do
     expect(result[:date]).to be_instance_of(DateTime)
   end
 
-  it "should return an empty list for no commits" do
+  it "should return an empty hash for no commits" do
     result = CommitLister::CliCommitParser.new.run("")
-    expect(result).to be_instance_of(Hash)
-    expect(result.keys.size).to eql(0)
+    expect(result).to eql({})
   end
 end
