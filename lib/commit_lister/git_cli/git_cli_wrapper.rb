@@ -20,9 +20,18 @@ module GitWrapper
       system("timeout", "#{timeout}", "git", "clone", "#{url}", dir)
     end
 
-    def self.get_commits(format)
-      command = "git log --oneline --format='#{format}'"
+    def self.get_commits
+      command = "git log --oneline --format='#{format_string}'"
       `#{command}`
+    end
+
+    private
+
+    def self.format_string
+      format = Constants::COMMIT_FORMAT_TO_OUTPUT.clone
+      correspondence = Constants::GIT_CLI_FORMAT_CORRESPONDENCE
+      format.map { |parameter| correspondence[parameter] }
+          .join(Constants::FORMAT_PARAMETERS_SEPARATOR)
     end
   end
 end

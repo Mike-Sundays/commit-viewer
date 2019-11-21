@@ -3,7 +3,7 @@ require 'directory_utils'
 require 'result'
 require 'will_paginate/array'
 require_relative './git_cli_wrapper'
-require_relative './git_log_cli_format'
+require_relative '../constants'
 require_relative '../url_helper'
 
 module CommitLister
@@ -65,11 +65,7 @@ module CommitLister
     end
 
     def extract_local_log
-      GitWrapper::Commands.get_commits(format_for_git).split("\n")
-    end
-
-    def format_for_git
-      GitLogCliFormat.format_string
+      GitWrapper::Commands.get_commits.split("\n")
     end
 
     def paginate_result(log)

@@ -1,7 +1,9 @@
 require 'date'
+require_relative '../constants'
 
 module CommitLister
   class ApiCommitParser
+
     def run(element)
       commit = extract_parameters(element)
       commit[:date] = parse_date_to_datetime(commit)
@@ -12,11 +14,17 @@ module CommitLister
 
     def extract_parameters(element)
       commit = {}
-      commit[:hash] = element["sha"]
-      commit[:author] = element["commit"]["author"]["name"]
-      commit[:message] = element["commit"]["message"]
-      commit[:date] = element["commit"]["author"]["date"]
+
+      Constants::COMMIT_FORMAT_TO_OUTPUT.map do |parameter|
+        commit[parameter] = extract_parameter(parameter)
+      end
+
       commit
+    end
+
+    def extract_parameter(parameter)
+      keys_of_param = Constants::API_RESPONSE_CORRESPONDENCE[parameter]
+      element.dig(*keys_of_param)
     end
 
     def parse_date_to_datetime(commit)
