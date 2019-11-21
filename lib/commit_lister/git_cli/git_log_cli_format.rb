@@ -2,9 +2,9 @@
 # simply add it to these two constants.
 # For the correspondence with the git % parameters
 # check the git documentation online
-class CommitConstants
-  COMMIT_FORMAT = [:hash, :message, :author, :date].freeze
-  FORMAT_CORRESPONDENCE = {
+class GitLogCliFormat
+  COMMIT_FORMAT_TO_OUTPUT = [:hash, :message, :author, :date].freeze
+  GIT_CLI_FORMAT_CORRESPONDENCE = {
       :hash => "%H",
       :message => "%s",
       :author => "%an",
@@ -13,9 +13,9 @@ class CommitConstants
   }
   FORMAT_PARAMETERS_SEPARATOR = ","
 
-  def self.format_string_for_git_log
-    format = COMMIT_FORMAT.clone
-    correspondence = FORMAT_CORRESPONDENCE
+  def self.format_string
+    format = COMMIT_FORMAT_TO_OUTPUT.clone
+    correspondence = GIT_CLI_FORMAT_CORRESPONDENCE
     format.map { |parameter| correspondence[parameter] }
         .join(FORMAT_PARAMETERS_SEPARATOR)
   end

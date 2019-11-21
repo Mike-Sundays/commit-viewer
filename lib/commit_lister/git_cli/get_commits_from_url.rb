@@ -3,7 +3,7 @@ require 'directory_utils'
 require 'result'
 require 'will_paginate/array'
 require_relative './git_wrapper'
-require_relative './commit_constants'
+require_relative './git_log_cli_format'
 require_relative '../url_helper'
 
 module CommitListerCli
@@ -69,7 +69,7 @@ module CommitListerCli
     end
 
     def format_for_git
-      CommitConstants.format_string_for_git_log
+      GitLogCliFormat.format_string
     end
 
     def paginate_result(log)

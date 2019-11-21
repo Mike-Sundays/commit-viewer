@@ -1,6 +1,6 @@
 require 'tmpdir'
 require 'date'
-require_relative './commit_constants'
+require_relative './git_log_cli_format'
 
 module CommitListerCli
 
@@ -9,8 +9,8 @@ module CommitListerCli
     attr_reader :separator, :format
 
     def initialize
-      @separator = CommitConstants::FORMAT_PARAMETERS_SEPARATOR
-      @format = CommitConstants::COMMIT_FORMAT
+      @separator = GitLogCliFormat::FORMAT_PARAMETERS_SEPARATOR
+      @format = GitLogCliFormat::COMMIT_FORMAT_TO_OUTPUT
     end
 
     def run(log)
