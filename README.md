@@ -61,7 +61,7 @@ The main entry point is `viewer_orchestrator`. It is the class that is called in
 
 For each source (GitHub API or Git CLI), there is an implementation of a parser and a getter. These are instantiated in `viewer_orchestrator` and injected into the `lister` class.
 
-The `lister` class validates the input url, gets the commit through the `getter` , runs through each received commit, and uses the `parser` to build a data structure with each commit. In the end, it returns an array of hashes, each one representing a commit.
+The `lister` class calls `ValidateUrl` to validate the input url, gets the commit through the `getter` , runs through each received commit, and uses the `parser` to build a data structure with each commit. In the end, it returns an array of hashes, each one representing a commit.
 
 The code is protected against malformed url's and injected commands (CLI case). It also times out if any of the sources fails to respond. That value is configurable, in `constants.rb`.
 
@@ -79,7 +79,7 @@ Currently, the correspondence for existing parsers is defined in `constants.rb`,
 
 ### Adding a new parameter to the output
 
-To add a new parameter to the log output, add it to the output format. You will thenhave to add a correspondence for each one of the sources, depending on the data structure it returns. See current examples in `constants.rb` 
+To add a new parameter to the log output, add it to the output format. You will then have to add a correspondence for each one of the sources, depending on the data structure it returns. See current examples in `constants.rb` 
 
 ## Things I would like to have done:
 
