@@ -11,7 +11,7 @@ class Constants
       :author => "%an",
       :date => "%ad"
   }
-  FORMAT_PARAMETERS_SEPARATOR = ","
+  FORMAT_PARAMETERS_SEPARATOR = "|"
 
   API_RESPONSE_CORRESPONDENCE = {
       :hash => ["sha"],

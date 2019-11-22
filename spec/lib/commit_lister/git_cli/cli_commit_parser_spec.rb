@@ -2,7 +2,7 @@ require './lib/commit_lister/git_cli/cli_commit_parser'
 
 RSpec.describe CommitLister::CliCommitParser do
   before :all do
-     @line = '0e94cd1,add readme,mike-sundays,Tue Nov 12 12:21:11 2019 +0000'
+     @line = '0e94cd1|add readme|mike-sundays|Tue Nov 12 12:21:11 2019 +0000'
   end
 
   it "should return a list of commits for valid input" do
