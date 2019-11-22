@@ -1,0 +1,79 @@
+{
+  "sha": "0e94cd1cf7d7b1510b8acc0ffa3202f7e82305bf",
+  "node_id": "MDY6Q29tbWl0MjIxMjExNDk3OjBlOTRjZDFjZjdkN2IxNTEwYjhhY2MwZmZhMzIwMmY3ZTgyMzA1YmY=",
+  "commit": {
+    "author": {
+      "name": "mike-sundays",
+      "email": "miguel.cdomingos@gmail.com",
+      "date": "2019-11-12T12:21:11Z"
+    },
+    "committer": {
+      "name": "mike-sundays",
+      "email": "miguel.cdomingos@gmail.com",
+      "date": "2019-11-12T12:21:11Z"
+    },
+    "message": "add simple description to readme",
+    "tree": {
+      "sha": "17960ecfd87ca7959bcbdc24db4cd46489aec4b7",
+      "url": "https://api.github.com/repos/Mike-Sundays/simple-notes-react/git/trees/17960ecfd87ca7959bcbdc24db4cd46489aec4b7"
+    },
+    "url": "https://api.github.com/repos/Mike-Sundays/simple-notes-react/git/commits/0e94cd1cf7d7b1510b8acc0ffa3202f7e82305bf",
+    "comment_count": 0,
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null
+    }
+  },
+  "url": "https://api.github.com/repos/Mike-Sundays/simple-notes-react/commits/0e94cd1cf7d7b1510b8acc0ffa3202f7e82305bf",
+  "html_url": "https://github.com/Mike-Sundays/simple-notes-react/commit/0e94cd1cf7d7b1510b8acc0ffa3202f7e82305bf",
+  "comments_url": "https://api.github.com/repos/Mike-Sundays/simple-notes-react/commits/0e94cd1cf7d7b1510b8acc0ffa3202f7e82305bf/comments",
+  "author": {
+    "login": "Mike-Sundays",
+    "id": 15968387,
+    "node_id": "MDQ6VXNlcjE1OTY4Mzg3",
+    "avatar_url": "https://avatars0.githubusercontent.com/u/15968387?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/Mike-Sundays",
+    "html_url": "https://github.com/Mike-Sundays",
+    "followers_url": "https://api.github.com/users/Mike-Sundays/followers",
+    "following_url": "https://api.github.com/users/Mike-Sundays/following{/other_user}",
+    "gists_url": "https://api.github.com/users/Mike-Sundays/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/Mike-Sundays/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/Mike-Sundays/subscriptions",
+    "organizations_url": "https://api.github.com/users/Mike-Sundays/orgs",
+    "repos_url": "https://api.github.com/users/Mike-Sundays/repos",
+    "events_url": "https://api.github.com/users/Mike-Sundays/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/Mike-Sundays/received_events",
+    "type": "User",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "Mike-Sundays",
+    "id": 15968387,
+    "node_id": "MDQ6VXNlcjE1OTY4Mzg3",
+    "avatar_url": "https://avatars0.githubusercontent.com/u/15968387?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/Mike-Sundays",
+    "html_url": "https://github.com/Mike-Sundays",
+    "followers_url": "https://api.github.com/users/Mike-Sundays/followers",
+    "following_url": "https://api.github.com/users/Mike-Sundays/following{/other_user}",
+    "gists_url": "https://api.github.com/users/Mike-Sundays/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/Mike-Sundays/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/Mike-Sundays/subscriptions",
+    "organizations_url": "https://api.github.com/users/Mike-Sundays/orgs",
+    "repos_url": "https://api.github.com/users/Mike-Sundays/repos",
+    "events_url": "https://api.github.com/users/Mike-Sundays/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/Mike-Sundays/received_events",
+    "type": "User",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "7446692d37f5eba77468ad5c92412a38a44e5575",
+      "url": "https://api.github.com/repos/Mike-Sundays/simple-notes-react/commits/7446692d37f5eba77468ad5c92412a38a44e5575",
+      "html_url": "https://github.com/Mike-Sundays/simple-notes-react/commit/7446692d37f5eba77468ad5c92412a38a44e5575"
+    }
+  ]
+}
