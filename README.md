@@ -53,11 +53,15 @@ All tests are in the spec folder.
 
 All the business logic of the application is contained inside the lib folder. I made this choice so that I could build the application independent from rails, and only use it to handle the requests.
 
+I strived to follow SOLID practices. Especially, I tried to structure it so it would be open for extension, close for modification as it regards to new parameters in the output, for each commit, and to new sources.
+
 The main entry point is `viewer_orchestrator`. It is the class that is called in the rails controller and that triggers all the process of getting the commits. First it tries to get them through the GitHub API, and if that does not work, it clones the repo and uses the Git CLI
 
 For each source (GitHub API or Git CLI), there is an implementation of a parser and a getter. These are instantiated in `viewer_orchestrator` and injected into the `lister` class.
 
-The `lister` class gets the commit through the `getter` , runs through each received commit, and uses the `parser` to build a data structure with each commit. In the end, it returns an array of hashes, each one representing a commit.
+The `lister` class validates the input url, gets the commit through the `getter` , runs through each received commit, and uses the `parser` to build a data structure with each commit. In the end, it returns an array of hashes, each one representing a commit.
+
+The code is protected against malformed url's and injected commands (CLI case). It also times out if any of the sources fails to respond. That value is configurable, in `constants.rb`.
 
 ### Adding a new source
 
@@ -71,4 +75,6 @@ You will then have to also create a `parser`, which mixes in `ParserMixin`, and 
 
 Currently, the correspondence for existing parsers is defined in `constants.rb`, as is the format to output. 
 
-## 
+### Adding a new parameter to the output
+
+To add a new parameter to the log output, add it to the output format. You will thenhave to add a correspondence for each one of the sources, depending on the data structure it returns. See current examples in `constants.rb` 
