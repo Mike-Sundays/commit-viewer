@@ -30,7 +30,7 @@ There is only one endpoint, at `/commits`. It receives a get request with an `ur
 **Example:**
 
 ```
-commits?url=https://github.com/codacy/codacy-detekt.git&page=1&per_page=2
+localhost:3000/commits?url=https://github.com/codacy/codacy-detekt.git&page=1&per_page=2
 ```
 
 ## How to run tests
@@ -47,7 +47,9 @@ To run specific:
 rspec path_to_file
 ```
 
-All tests are in the spec folder.
+All tests are in the spec folder. Some of them are dependent on an Internet connection, since they test the actual communication with github.
+
+I used another repo in my account as an example url. 
 
 ## Structure
 
@@ -78,3 +80,11 @@ Currently, the correspondence for existing parsers is defined in `constants.rb`,
 ### Adding a new parameter to the output
 
 To add a new parameter to the log output, add it to the output format. You will thenhave to add a correspondence for each one of the sources, depending on the data structure it returns. See current examples in `constants.rb` 
+
+## Things I would like to have done:
+
+- Remove the dependency on my hardcoded repo in the tests.
+- Add functionality to specify branch.
+- Add more tests to get more coverage.
+- Add CI.
+- Run static analysis and refactor to improve quality.
