@@ -12,7 +12,8 @@ class UrlHelper
   end
 
   def self.url_returns_ok?(url)
-    response = HTTParty.get(url)
+    url_without_extension = UrlHelper.url_without_extension(url)
+    response = HTTParty.get(url_without_extension)
     response.code == 200 ? true : false
   end
 end

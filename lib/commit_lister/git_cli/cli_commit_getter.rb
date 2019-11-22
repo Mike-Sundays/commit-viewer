@@ -20,8 +20,6 @@ module CommitLister
       project_path = nil
 
       begin
-        raise GitWrapper::NoRepositoryError unless repo_exists?(url)
-
         project_path = download_repo_into_tmp_folder(url)
         DirectoryUtils.change_directory(project_path)
 
@@ -37,11 +35,6 @@ module CommitLister
     end
 
     private
-
-    def repo_exists?(url)
-      url_without_extension = UrlHelper.url_without_extension(url)
-      UrlHelper.url_returns_ok?(url_without_extension)
-    end
 
     def download_repo_into_tmp_folder(url)
       project_name = parse_project_name(url)

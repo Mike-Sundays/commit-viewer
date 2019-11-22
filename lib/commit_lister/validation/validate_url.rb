@@ -23,11 +23,14 @@ module CommitListerCli
       elsif !valid_host?(parsed_url)
         validation_result(false, ValidateUrlMessages::NOT_GITHUB)
 
+      elsif !repo_exists?(url)
+        validation_result(false, ValidateUrlMessages::NO_REPO)
+
       else
         validation_result(true, "")
       end
     rescue URI::Error => e
-        validation_result(false, e.message)
+      validation_result(false, e.message)
     end
 
     def validation_result(valid, message)
@@ -37,6 +40,10 @@ module CommitListerCli
     def parse
       # this avoids most injection cases
       URI.parse(url)
+    end
+
+    def repo_exists?(url)
+      UrlHelper.url_returns_ok?(url)
     end
 
     def valid_https?(parsed_url)

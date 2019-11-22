@@ -7,12 +7,6 @@ module GitWrapper
     end
   end
 
-  class NoRepositoryError < StandardError
-    def message
-      "The repository you provided does not exist"
-    end
-  end
-
   class Commands
     def self.clone_repo(url, timeout, dir)
       # see https://stackoverflow.com/questions/1936633
