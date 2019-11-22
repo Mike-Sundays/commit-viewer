@@ -21,6 +21,6 @@ class CommitsController < ApplicationController
   private
 
   def safe_params
-    params.permit(:url,  :page, :per_page)
+    params.permit(:url,  :page, :per_page, :format)
   end
 end
