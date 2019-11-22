@@ -9,6 +9,14 @@ RSpec.describe CommitListerCli::ValidateUrl do
     expect(result[:valid]).to eql(true)
   end
 
+  it "should return true for valid url with www" do
+    url = "https://www.github.com/Mike-Sundays/simple-notes-react.git"
+
+    result = CommitListerCli::ValidateUrl.new(url).validate
+
+    expect(result[:valid]).to eql(true)
+  end
+
   it "should return false for url with no .git" do
     url = "https://github.com/Mike-Sundays/simple-notes-react"
 

@@ -55,7 +55,7 @@ module CommitListerCli
     end
 
     def valid_host?(parsed_url)
-      parsed_url.host == "github.com"
+      parsed_url.host == "github.com" || parsed_url.host == "www.github.com"
     end
   end
 end

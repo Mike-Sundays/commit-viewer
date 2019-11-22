@@ -10,7 +10,7 @@ class UrlHelper
   end
 
   def self.url_without_extension(url)
-    url.split(".git")[0]
+    url[0..-5]
   end
 
   def self.url_returns_ok?(url)
