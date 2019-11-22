@@ -39,9 +39,7 @@ RSpec.describe "get commits from repo endpoint", :type => :request do
 
       expect(response.content_type).to eq("application/json; charset=utf-8")
       expect(response).to have_http_status(200)
-
       expect(result).to be_instance_of(Array)
-
       expect(first_commit).to be_instance_of(Hash)
       expect(first_commit.keys).to include("hash", "message", "author", "date")
       expect(result.size).to eql(per_page)
@@ -63,6 +61,18 @@ RSpec.describe "get commits from repo endpoint", :type => :request do
   context 'given an non existing repo' do
     it 'returns a bad request response response' do
       repo_url = "http://github.com/Mike-Sundays/fake.git"
+      query_string = "?url=#{repo_url}"
+
+      get "/commits/#{query_string}"
+
+      expect(response.content_type).to eq("application/json; charset=utf-8")
+      expect(response).to have_http_status(400)
+    end
+  end
+
+  context 'given an injected command' do
+    it 'returns a bad request response ' do
+      repo_url = "http://github.com/Mike-Sundays/simple-notes-react.git&&pwd"
       query_string = "?url=#{repo_url}"
 
       get "/commits/#{query_string}"

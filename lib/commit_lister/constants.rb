@@ -1,7 +1,13 @@
 # To add a new parameter to the log output,
-# simply add it to these two constants.
-# For the correspondence with the git % parameters
+# add it to the output format. You will then
+# have to add a correspondence for each one of
+# the sources, depending on the data structure it returns
+
+# For the correspondence with the git log format parameters
 # check the git documentation online
+
+# For correspondence with the github v3 api response, see
+# that api's documentation
 class Constants
   OUTPUT_FORMAT = [:hash, :message, :author, :date].freeze
 

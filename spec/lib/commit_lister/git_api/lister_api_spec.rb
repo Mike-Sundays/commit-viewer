@@ -5,7 +5,6 @@ require './lib/commit_lister/git_api/api_commit_getter'
 
 RSpec.describe CommitLister::Lister do
   before :all do
-    @url = "https://github.com/Mike-Sundays/simple-notes-react.git"
     @page = 1
     @per_page = 10
     @parser = CommitLister::ApiCommitParser.new
@@ -13,8 +12,10 @@ RSpec.describe CommitLister::Lister do
   end
 
   it "should return a default paginated list of commits" do
-    # this test will fail when I do to many requests due to the github throtler
-    result = CommitLister::Lister.new(@url, @parser, @getter).run
+    # this test will fail when I do too many requests due to the github throtler
+    url = "https://github.com/Mike-Sundays/simple-notes-react.git"
+
+    result = CommitLister::Lister.new(url, @parser, @getter).run
     first_commit = result.data.first
 
     expect(result.successful).to eql(true)
@@ -33,10 +34,9 @@ RSpec.describe CommitLister::Lister do
   end
 
   it "should return a failure if repo does not exist" do
-    result = CommitLister::Lister.new(
-        "https://github.com/Mike-Sundays/iehgsie.git",
-        @parser,@getter
-    ).run
+    url = "https://github.com/Mike-Sundays/iehgsie.git"
+
+    result = CommitLister::Lister.new(url, @parser, @getter).run
 
     expect(result.successful).to eql(false)
     expect(result.error).to be

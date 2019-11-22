@@ -1,11 +1,9 @@
-# these are tests that communicate directly with github
 require './lib/commit_lister/lister'
 require './lib/commit_lister/git_cli/cli_commit_parser'
 require './lib/commit_lister/git_cli/cli_commit_getter'
 
 RSpec.describe CommitLister::Lister do
   before :all do
-    @url = "https://github.com/Mike-Sundays/simple-notes-react.git"
     @page = 1
     @per_page = 10
     @parser = CommitLister::CliCommitParser.new
@@ -13,7 +11,9 @@ RSpec.describe CommitLister::Lister do
   end
 
   it "should return paginated list of commits" do
-    result = CommitLister::Lister.new(@url, @parser, @getter).run
+    url = "https://github.com/Mike-Sundays/simple-notes-react.git"
+
+    result = CommitLister::Lister.new(url, @parser, @getter).run
     first_commit = result.data.first
 
     expect(result.successful).to eql(true)
