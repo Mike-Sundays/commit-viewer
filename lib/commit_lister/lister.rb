@@ -40,7 +40,7 @@ module CommitLister
     end
 
     def valid_url?
-      CommitListerCli::ValidateUrl.new(url).validate
+      CommitLister::ValidateUrl.new(url).validate
     end
 
     def get_commits

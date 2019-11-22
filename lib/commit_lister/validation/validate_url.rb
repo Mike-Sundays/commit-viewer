@@ -2,7 +2,7 @@ require 'uri'
 require_relative '../url_helper'
 require_relative './validate_url_messages'
 
-module CommitListerCli
+module CommitLister
   # valid link is an https link as provided in download
   # button in online repository
   class ValidateUrl
