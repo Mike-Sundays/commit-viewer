@@ -1,3 +1,5 @@
+require 'httparty'
+
 class UrlHelper
   def self.get_owner(url)
     url.split('/')[-2]
