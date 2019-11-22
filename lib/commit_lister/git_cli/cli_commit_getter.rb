@@ -9,8 +9,6 @@ require_relative '../url_helper'
 module CommitLister
   class CliCommitGetter
 
-    DEFAULT_TIMEOUT_SECONDS = "30".freeze
-
     attr_reader :page, :per_page
 
     def initialize(page, per_page)
@@ -61,7 +59,9 @@ module CommitLister
     end
 
     def cloned_repo?(dir, url)
-      GitWrapper::Commands.clone_repo(url, DEFAULT_TIMEOUT_SECONDS, dir)
+      GitWrapper::Commands.clone_repo(
+          url, Constants::DEFAULT_TIMEOUT_SECONDS, dir
+      )
     end
 
     def extract_local_log

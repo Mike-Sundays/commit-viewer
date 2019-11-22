@@ -1,11 +1,11 @@
 require 'result'
 require 'httparty'
 require_relative '../url_helper'
+require_relative '../constants'
 
 module CommitLister
   class ApiCommitGetter
 
-    DEFAULT_TIMEOUT_SECONDS = "30".freeze
     OWNER_PLACEHOLDER = ":owner"
     REPO_PLACEHOLDER = ":repo"
     URL_API = "https://api.github.com/repos/#{OWNER_PLACEHOLDER}/#{REPO_PLACEHOLDER}/commits"
@@ -50,7 +50,7 @@ module CommitLister
       response = HTTParty.get(
           url_to_request, headers: headers,
           query: query_string,
-          timeout: DEFAULT_TIMEOUT_SECONDS
+          timeout: Constants::DEFAULT_TIMEOUT_SECONDS
       )
       response.body
     end

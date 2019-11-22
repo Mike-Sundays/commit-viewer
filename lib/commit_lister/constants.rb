@@ -19,4 +19,6 @@ class Constants
       :message => ["commit", "message"],
       :date => ["commit", "author", "date"]
   }
+
+  DEFAULT_TIMEOUT_SECONDS = "30".freeze
 end
