@@ -1,5 +1,7 @@
 # Commit viewer
 
+**Made for a job code challenge.**
+
 This is an application which given a git url, returns a paginated list of commits of that repository. It tries to get them first through the github api, and if that does not work, it clones the repo temporarely and obtains the commits from there. 
 
 The **choosen stack** was:
